@@ -1,5 +1,15 @@
 # snake
 
+run
+
+    $ cd snake
+    $ gradlew lwjgl3:run
+
+
+![](/2025-07-22_230531.png)
+
+---
+
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
 This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
@@ -31,3 +41,18 @@ Useful Gradle tasks and flags:
 
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
+
+run บน window
+
+- `gradlew.bat lwjgl3:run`
+
+run บน wsl ubuntu
+
+- `./gradlew lwjgl3:run` 
+
+
+x, y
+
+(50, 50), (60, 50), (70, 50)
+
+[] [] []

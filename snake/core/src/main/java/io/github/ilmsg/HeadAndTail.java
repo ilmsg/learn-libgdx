@@ -68,6 +68,10 @@ public class HeadAndTail {
         }
     }
 
+    public void increaseTailCells() {
+        positions.add(new Vector2(positions.get(positions.size - 1).x, positions.get(positions.size - 1).y));
+    }
+
     public void setLeft(boolean left) {
         this.left = left;
     }

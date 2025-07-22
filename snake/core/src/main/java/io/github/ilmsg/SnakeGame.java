@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 public class SnakeGame extends ApplicationAdapter {
     public static final String TITLE = "Snake Game";
@@ -15,6 +16,10 @@ public class SnakeGame extends ApplicationAdapter {
     private SpriteBatch sb;
     private OrthographicCamera cam;
     private HeadAndTail snake;
+    private Apple apple;
+    private int randPositionXApple = (WIDTH / CELL_SIZE) - 1;
+    private int randPositionYApple = (HEIGHT / CELL_SIZE) - 1;
+    private boolean samePosition = false;
 
     @Override
     public void create() {
@@ -23,10 +28,13 @@ public class SnakeGame extends ApplicationAdapter {
         cam = new OrthographicCamera();
         cam.setToOrtho(false, WIDTH, HEIGHT);
 
+        snake = new HeadAndTail(50, 50);
+        apple = new Apple();
+        randomApplePosition();
+
         Gdx.gl.glClearColor(0.15f, 0.15f, 0.2f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        snake = new HeadAndTail(50, 50);
     }
 
     @Override
@@ -37,8 +45,9 @@ public class SnakeGame extends ApplicationAdapter {
 
     public void update(float dt) {
         handleInput();
-        cam.update();
         snake.update(dt);
+        checkAppleCollision();
+        cam.update();
     }
 
     public void draw() {
@@ -46,6 +55,7 @@ public class SnakeGame extends ApplicationAdapter {
         sb.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         snake.render(sb);
+        apple.render(sb);
         sb.end();
     }
 
@@ -71,6 +81,30 @@ public class SnakeGame extends ApplicationAdapter {
             snake.setDown(true);
             snake.setLeft(false);
             snake.setRight(false);
+        }
+    }
+
+    private void randomApplePosition() {
+        do {
+            samePosition = false;
+
+            int randX = (int) (Math.random() * randPositionXApple) * CELL_SIZE;
+            int randY = (int) (Math.random() * randPositionYApple) * CELL_SIZE;
+            apple.setPosition(new Vector2(randX, randY));
+
+            for (int i = 0; i < snake.getPositions().size; i++) {
+                if (apple.getPosition().equals(snake.getPositions().get(i))) {
+                    samePosition = true;
+                    break;
+                }
+            }
+        } while (samePosition);
+    }
+
+    private void checkAppleCollision() {
+        if (apple.getPosition().equals(snake.getPositions().get(0))) {
+            snake.increaseTailCells();
+            randomApplePosition();
         }
     }
 }
